@@ -18,11 +18,11 @@ public class UserDaoImpl implements UserDao {
 
     private void init() {
 
-        addCar(new Car("Lada", "White", 1.6));
-        addCar(new Car("BMW", "BLACK", 3.5));
-        addCar(new Car("Porshe", "Red", 4.0));
-        addCar(new Car("Opel", "Orange", 2.0));
-        addCar(new Car("Kia", "Black", 3.8));
+        addCar(new Car("Lada", "White", 98));
+        addCar(new Car("BMW", "BLACK", 350));
+        addCar(new Car("Porshe", "Red", 300));
+        addCar(new Car("Opel", "Orange", 120));
+        addCar(new Car("Kia", "Black", 150));
     }
 
     @Override

@@ -22,14 +22,9 @@ public class CarController {
 
     @GetMapping(value = "/cars")
     public String printWelcome(ModelMap model, HttpServletRequest request) {
-        List<Car> cars = null;
-
-        if (request.getQueryString() == null) {
-            cars = carService.getCars(5);
-        } else {
-            int count = Integer.parseInt(request.getParameter("count"));
-            cars = carService.getCars(count);
-        }
+        List<Car> cars = request.getQueryString() == null
+                        ? carService.getCars(5)
+                        :carService.getCars(Integer.parseInt(request.getParameter("count")));
 
         model.addAttribute("forms", cars);
         return "car";

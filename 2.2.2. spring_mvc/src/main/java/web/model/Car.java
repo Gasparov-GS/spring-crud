@@ -4,9 +4,9 @@ public class Car {
 
     private String model;
     private String color;
-    private double enginePower;
+    private int enginePower;
 
-    public Car(String model, String color, double enginePower) {
+    public Car(String model, String color, int enginePower) {
         this.model = model;
         this.color = color;
         this.enginePower = enginePower;
@@ -32,7 +32,7 @@ public class Car {
         return enginePower;
     }
 
-    public void setEnginePower(double enginePower) {
+    public void setEnginePower(int enginePower) {
         this.enginePower = enginePower;
     }
 }
