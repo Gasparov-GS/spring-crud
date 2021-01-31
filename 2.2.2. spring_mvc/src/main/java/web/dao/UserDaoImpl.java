@@ -1,7 +1,6 @@
 package web.dao;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import web.model.User;
 
 import javax.persistence.EntityManager;
@@ -24,17 +23,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void removeUser(int id) {
         Optional<User> user = findUserById(id);
-        if(user.isPresent()) {
+        if (user.isPresent()) {
             entityManager.remove(user.get());
         } else {
             System.out.println("Пользователь с Id" + id + " не найден");
         }
-    }
-
-    @Override
-    public void updateUser(int id) {
-//        User user = entityManager.find(User.class, id);
-//        entityManager.detach(user);
     }
 
     @Override

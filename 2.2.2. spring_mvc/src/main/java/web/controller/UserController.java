@@ -8,26 +8,23 @@ import org.springframework.web.bind.annotation.*;
 import web.model.User;
 import web.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-
-import static java.rmi.server.LogStream.log;
 
 @Controller
 @Slf4j
-public class HelloController {
+public class UserController {
 
     private final UserService userService;
 
-    public HelloController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping(value = "/")
-    public String showFilms(ModelMap modelMap) {
+    public String userList(ModelMap modelMap) {
         List<User> userList = userService.allUser();
         modelMap.addAttribute("forms", userList);
-        HelloController.log.info("[GET] /");
+        UserController.log.info("[GET] /");
         return "index";
     }
 
@@ -35,7 +32,7 @@ public class HelloController {
     @PostMapping("/delete")
     private String deleteUser(@RequestParam("id") int id) {
         userService.removeUser(id);
-        HelloController.log.info("[POST] /deleteUser " + id);
+        UserController.log.info("[POST] /deleteUser " + id);
         return "redirect:/";
     }
 
@@ -55,11 +52,17 @@ public class HelloController {
     }
 
     @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+    public String updateForm(@PathVariable("id") int id, Model model) {
         User user = userService.findUserById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         model.addAttribute("user", user);
         return "updateUser";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateUser(User user) {
+        userService.addUser(user);
+        return "redirect:/";
     }
 
 }

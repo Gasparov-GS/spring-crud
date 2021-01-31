@@ -25,5 +25,4 @@ public class User {
         this.name = name;
         this.mail = mail;
     }
-
 }

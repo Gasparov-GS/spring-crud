@@ -26,10 +26,11 @@
                     <input type="hidden" name="id" th:value="${userlist.id}" />
                     <input type="submit" value="Delete" class="btn btn-danger" />
                 </form>
-                <form th:action="@{update}" th:method="post">
+                <form th:action="@{/update/{id}(id=${userlist.id})}" th:method="get">
                     <input type="hidden" name="id" th:value="${userlist.id}" />
                     <input type="submit" value="Update" class="btn btn-danger" />
                 </form>
+
             </td>
         </tr>
     </table>
