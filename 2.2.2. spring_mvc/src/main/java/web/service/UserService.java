@@ -1,14 +1,15 @@
-package web.dao;
+package web.service;
 
+import org.springframework.stereotype.Service;
 import web.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserDao {
+
+public interface UserService {
     void addUser(User user);
     void removeUser(int id);
-    void updateUser(int id);
-    List<User> getAllUsers();
+    List<User> allUser();
     Optional<User> findUserById(int id);
 }

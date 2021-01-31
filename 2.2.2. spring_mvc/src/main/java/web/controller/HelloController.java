@@ -1,24 +1,65 @@
 package web.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import web.model.User;
+import web.service.UserService;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+import static java.rmi.server.LogStream.log;
+
 @Controller
+@Slf4j
 public class HelloController {
 
-	@GetMapping(value = "/")
-	public String printWelcome(ModelMap model) {
-		List<String> messages = new ArrayList<>();
-		messages.add("Hello!");
-		messages.add("I'm Spring MVC application");
-		messages.add("5.2.0 version by sep'19 ");
-		model.addAttribute("messages", messages);
-		return "index";
-	}
-	
+    private final UserService userService;
+
+    public HelloController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping(value = "/")
+    public String showFilms(ModelMap modelMap) {
+        List<User> userList = userService.allUser();
+        modelMap.addAttribute("forms", userList);
+        HelloController.log.info("[GET] /");
+        return "index";
+    }
+
+
+    @PostMapping("/delete")
+    private String deleteUser(@RequestParam("id") int id) {
+        userService.removeUser(id);
+        HelloController.log.info("[POST] /deleteUser " + id);
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/addUser")
+    private String userForm(Model model) {
+        model.addAttribute("user", new User());
+        return "add";
+    }
+
+
+    @PostMapping("/addUser")
+    private String addUser(@ModelAttribute User user, Model model) {
+        model.addAttribute("user", user);
+        userService.addUser(user);
+        return "redirect:/";
+    }
+
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable("id") int id, Model model, HttpServletRequest request) {
+        User user = userService.findUserById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
+        model.addAttribute("user", user);
+        return "updateUser";
+    }
+
 }

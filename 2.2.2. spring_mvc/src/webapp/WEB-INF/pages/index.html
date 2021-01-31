@@ -7,9 +7,35 @@
 </head>
 <body>
 <div>
-    <th:block th:each="msg : ${messages}">
-        <h1 th:text="${msg}"></h1>
-    </th:block>
+    <table border="1">
+        <tr>
+            <th th:width="100">id</th>
+            <th>name</th>
+            <th>E_mail</th>
+            <th>Actions</th>
+        </tr>
+
+        <tr th:each="userlist, state : ${forms}"
+            class="row" th:classappend="${state.odd} ? 'odd-row' : 'even-row'">
+
+            <td th:utext="${userlist.id}">id</td>
+            <td th:utext="${userlist.name}">name</td>
+            <td th:utext="${userlist.mail}">E_mail</td>
+            <td >
+                <form th:action="@{delete}" th:method="post">
+                    <input type="hidden" name="id" th:value="${userlist.id}" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                </form>
+                <form th:action="@{update}" th:method="post">
+                    <input type="hidden" name="id" th:value="${userlist.id}" />
+                    <input type="submit" value="Update" class="btn btn-danger" />
+                </form>
+            </td>
+        </tr>
+    </table>
+    <form >
+        <a th:href="@{/addUser}">Add User</a>
+    </form>
 </div>
 </body>
 </html>

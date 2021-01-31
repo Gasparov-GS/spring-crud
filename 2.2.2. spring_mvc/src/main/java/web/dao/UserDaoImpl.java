@@ -1,37 +1,49 @@
 package web.dao;
 
-import web.model.Car;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import web.model.User;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Repository
 public class UserDaoImpl implements UserDao {
-    private final List<Car> cars = new ArrayList<>();
 
-    public UserDaoImpl() {
-        init();
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
-    private void init() {
-
-        addCar(new Car("Lada", "White", 98));
-        addCar(new Car("BMW", "BLACK", 350));
-        addCar(new Car("Porshe", "Red", 300));
-        addCar(new Car("Opel", "Orange", 120));
-        addCar(new Car("Kia", "Black", 150));
+    @Override
+    public void addUser(User user) {
+        entityManager.merge(user);
     }
 
     @Override
-    public List<Car> findCars(int countCar) {
-        return cars.stream().limit(countCar).collect(Collectors.toList());
+    public void removeUser(int id) {
+        Optional<User> user = findUserById(id);
+        if(user.isPresent()) {
+            entityManager.remove(user.get());
+        } else {
+            System.out.println("Пользователь с Id" + id + " не найден");
+        }
     }
 
     @Override
-    public void addCar(Car car) {
-        cars.add(car);
+    public void updateUser(int id) {
+//        User user = entityManager.find(User.class, id);
+//        entityManager.detach(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return entityManager.createQuery("from User c").getResultList();
+    }
+
+    @Override
+    public Optional<User> findUserById(int id) {
+        return Optional.of(entityManager.find(User.class, id));
     }
 }
